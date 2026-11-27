@@ -1,0 +1,171 @@
+#include <stdio.h>
+struct person
+{
+    char name[30];
+    int pin;
+    int acn;
+    int balance;
+};
+int main()
+{
+    struct person p[10]={{"Aman",1234,100001,25000},{"Riya",5678,100002,18000},{"Rahul",4321,100003,32000},{"Priya",8765,100004,15000},{"Arjun",2468,100005,40000},
+                         {"Neha",1357,100006,22500},{"Karan",9876,100007,36000},{"Ananya",1122,100008,19500},{"Rohan",3344,100009,28000},{"Meera",5566,100010,45000}};
+    int acn,racn,tp,np;
+    int u,i,choice,amt,r;
+
+    start:
+    printf("WELCOME TO THE ATM\n");
+    printf("Enter Account Number: ");
+    scanf("%d",&acn);
+    u=-1;
+    for(i=0;i<10;i++)
+    {
+        if(p[i].acn==acn)
+        {
+            u=i;
+            break;
+        }
+    }
+    if(u==-1)
+    {
+        printf("\nSorry! Not found!\n");
+        goto start;
+    }
+    printf("%s,Entry Succesfull\n",p[u].name);
+    while(1)
+    {
+        printf("\nMENU:-\n");
+        printf("1->Check Balance\n");
+        printf("2->Withdraw Cash\n");
+        printf("3->Deposit Cash\n");
+        printf("4->Transfer Money\n");
+        printf("5->Change PIN\n");
+        printf("6->Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1:
+            {
+                printf("Enter your PIN: ");
+                scanf("%d",&tp);
+                if(tp==p[u].pin)
+                {
+                    printf("\nYour Balance is: Rs.%d\n",p[u].balance);
+                }
+                else
+                {
+                    printf("\nWrong PIN!\n");
+                }
+                break;
+            }
+            case 2:
+            {
+                printf("Enter your PIN: ");
+                scanf("%d",&tp);
+                if(tp==p[u].pin)
+                {
+                    printf("Enter amount to withdraw: ");
+                    scanf("%d",&amt);
+                    if(amt>p[u].balance)
+                    {
+                        printf("\nInsufficient money in account!\n");
+                    }
+                    else
+                    {
+                        p[u].balance=p[u].balance-amt;
+                        printf("Withdrawal Successful!\n");
+                    }
+                }
+                else
+                {
+                    printf("\nWrong PIN!\n");
+                }
+                break;
+            }
+            case 3:
+            {
+                printf("Enter your PIN: ");
+                scanf("%d",&tp);
+                if(tp==p[u].pin)
+                {
+                    printf("Enter amount to deposit: ");
+                    scanf("%d",&amt);
+                    p[u].balance=p[u].balance+amt;
+                    printf("\nDeposited Successfully!\n");
+                }
+                else
+                {
+                    printf("\nWrong PIN!\n");
+                }
+                break;
+            }
+            case 4:
+            {
+                r=-1;
+                printf("Enter receiver's Account Number: ");
+                scanf("%d",&racn);
+                printf("Enter amount to transfer: ");
+                scanf("%d",&amt);
+                if(amt>p[u].balance)
+                {
+                    printf("\nInsufficient money in account!\n");
+                }
+                else
+                {
+                    printf("Enter your PIN: ");
+                    scanf("%d",&tp);
+                    if(tp==p[u].pin)
+                    {
+                        for(i=0;i<10;i++)
+                        {
+                            if(p[i].acn==racn)
+                            {
+                                r=i;
+                                break;
+                            }
+                        }
+                        p[u].balance=p[u].balance-amt;
+                        if(r!=-1)
+                        {
+                            p[r].balance=p[r].balance+amt;
+                        }
+                        printf("\nTransfer Successful!\n");
+                    }
+                    else
+                    {
+                        printf("\nWrong PIN!\n");
+                    }
+                }
+                break;
+            }
+            case 5:
+            {
+                printf("Enter your current PIN: ");
+                scanf("%d",&tp);
+                if(tp==p[u].pin)
+                {
+                    printf("Enter new 4-digit PIN: ");
+                    scanf("%d",&np);
+                    p[u].pin=np;
+                    printf("\nPIN Changed Successfully!\n");
+                }
+                else
+                {
+                    printf("\nWrong PIN!\n");
+                }
+                break;
+            }
+            case 6:
+            {
+                printf("\nTHANK YOU,%s!\n",p[u].name);
+                goto start;
+            }
+            default:
+            {
+                printf("\nInvalid choice!\n");
+            }
+        }
+    }
+    return 0;
+}
